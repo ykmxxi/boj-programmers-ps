@@ -1,47 +1,58 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+/*
+    - n개 서로 다른 양의 정수 a1 ~ an, 각 수는 1 이상 백만 이하 (int)
+    - x가 주어졌을 때 ai + aj = x를 만족하는 쌍의 수 구하기
+ */
+
+import java.util.*;
+import java.io.*;
 
 public class Main {
-	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	static StringTokenizer st;
 
-	static int n, x;
-	static int[] A;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-	static void input() throws IOException {
-		n = Integer.parseInt(br.readLine());
-		A = new int[n + 1];
+    static int N, X, ans = 0;
+    static int[] A;
 
-		st = new StringTokenizer(br.readLine(), " ");
-		for (int i = 1; i <= n; i++) {
-			A[i] = Integer.parseInt(st.nextToken());
-		}
+    static void input() {
+        try {
+            N = Integer.parseInt(br.readLine());
 
-		x = Integer.parseInt(br.readLine());
-	}
+            StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+            A = new int[N];
+            for (int i = 0; i < N; i++) {
+                A[i] = Integer.parseInt(st.nextToken());
+            }
 
-	static void pro() {
-		Arrays.sort(A, 1, n + 1);
-		int answer = 0;
-		int L = 1, R = n;
-		while (L < R) {
-			if (A[L] + A[R] == x) {
-				answer++;
-			}
-			if (A[L] + A[R] >= x) {
-				R--;
-			} else {
-				L++;
-			}
-		}
-		System.out.println(answer);
-	}
+            X = Integer.parseInt(br.readLine());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public static void main(String[] args) throws IOException {
-		input();
-		pro();
-	}
+    static void pro() {
+        Arrays.sort(A);
+
+        int L = 0;
+        int R = N - 1;
+
+        while (L < R) {
+            if (A[L] + A[R] == X) {
+                ans++;
+            }
+            if (A[L] + A[R] < X) {
+                L++;
+            } else {
+                R--;
+            }
+
+        }
+
+        System.out.println(ans);
+    }
+
+    public static void main(String[] args) {
+        input();
+        pro();
+    }
+
 }
