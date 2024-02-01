@@ -1,78 +1,42 @@
+/*
+    - 숫자 카드 N개를 가지고 있을 때, M개의 숫자 카드가 주어지면 몇 개 가지고 있는지 세기
+    - 1 <= N <= 500,000 (int)
+    - 1 <= M <= 500,000 (int)
+ */
+
 import java.util.*;
 import java.io.*;
-
 public class Main {
-	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	static StringTokenizer st;
-	static StringBuilder sb = new StringBuilder();
+    
+    static StringTokenizer st;
+    static int n; // 숫자 카드 개수
+    static int m; // 찾을 카드 개수
+    static HashMap<Integer, Integer> map;
 
-	static int N, M;
-	static int[] A, B;
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-	static void input() throws IOException {
-		N = Integer.parseInt(br.readLine());
-		A = new int[N + 1];
+        n = Integer.parseInt(br.readLine());
+        map = new HashMap<>();
+        StringBuilder sb = new StringBuilder();
 
-		st = new StringTokenizer(br.readLine(), " ");
-		for (int i = 1; i <= N; i++) {
-			A[i] = Integer.parseInt(st.nextToken());
-		}
+        // 숫자 카드 입력
+        st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < n; i++) {
+            int num = Integer.parseInt(st.nextToken());
 
-		M = Integer.parseInt(br.readLine());
-		B = new int[M + 1];
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
 
-		st = new StringTokenizer(br.readLine(), " ");
-		for (int i = 1; i <= M; i++) {
-			B[i] = Integer.parseInt(st.nextToken());
-		}
-	}
 
-	static int lower_bound(int[] A, int L, int R, int X) {
-		int leftIdx = R + 1;
-		while (L <= R) {
-			int mid = (L + R) / 2;
+        // 찾을 카드 입력
+        m = Integer.parseInt(br.readLine());
+        st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < m; i++) {
+            int num = Integer.parseInt(st.nextToken());
+            sb.append(map.getOrDefault(num, 0) + " ");
+        }
 
-			if (A[mid] >= X) {
-				leftIdx = mid;
-				R = mid - 1;
-			} else {
-				L = mid + 1;
-			}
-		}
-		return leftIdx;
-	}
-
-	static int upper_bound(int[] A, int L, int R, int X) {
-		int rightIdx = R + 1;
-		while (L <= R) {
-			int mid = (L + R) / 2;
-
-			if (A[mid] > X) {
-				rightIdx = mid;
-				R = mid - 1;
-			} else {
-				L = mid + 1;
-			}
-		}
-		return rightIdx;
-	}
-
-	static void pro() {
-		// 이분 탐색할 배열을 정렬
-		Arrays.sort(A, 1, N + 1);
-
-		// 이분 탐색 시작
-		for (int i = 1; i <= M; i++) {
-			int answer = upper_bound(A, 1, N, B[i]) - lower_bound(A, 1, N, B[i]);
-			sb.append(answer).append(' ');
-		}
-
-		System.out.println(sb.toString());
-	}
-
-	public static void main(String[] args) throws IOException {
-		input();
-		pro();
-	}
-
+        System.out.println(sb);
+    }
 }
