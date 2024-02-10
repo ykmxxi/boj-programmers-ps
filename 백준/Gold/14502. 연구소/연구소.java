@@ -84,7 +84,7 @@ public class Main {
             bfs();
             return;
         }
-        if (idx > B) {
+        if (idx > B - 1) {
             return;
         }
 
@@ -101,13 +101,13 @@ public class Main {
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
                 if (A[i][j] == 0) {
-                    B++;
                     blank[B][0] = i;
                     blank[B][1] = j;
+                    B++;
                 }
             }
         }
-        dfs(1, 0);
+        dfs(0, 0);
 
        System.out.println(ans);
     }
