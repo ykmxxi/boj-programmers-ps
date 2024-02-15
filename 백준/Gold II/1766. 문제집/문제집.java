@@ -37,7 +37,7 @@ public class Main {
     static void pro() {
         StringBuilder sb = new StringBuilder();
 
-        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.comparingInt(o -> o));
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
         for (int i = 1; i <= N; i++) {
             if (indeg[i] == 0) {
                 pq.offer(i);
