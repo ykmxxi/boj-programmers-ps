@@ -1,0 +1,9 @@
+-- 동물 보호소에 들어온 동물 이름 중 두 버 이상 쓰인 이름과 횟수 조회
+-- 이름이 없는 동물은 집계에서 제외
+-- 이름 순 정렬
+
+select NAME, count(*) COUNT
+from ANIMAL_INS
+group by NAME
+having COUNT >= 2 and NAME is not null
+order by NAME;
