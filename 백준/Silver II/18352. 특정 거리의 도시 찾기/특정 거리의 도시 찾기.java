@@ -39,11 +39,8 @@ public class Main {
 
         while (!q.isEmpty()) {
             int x = q.poll();
-            if (dist[x] > K) {
-                break;
-            }
             if (dist[x] == K) {
-                ans.add(x);
+                break;
             }
 
             for (int y : adj[x]) {
@@ -51,6 +48,9 @@ public class Main {
                     continue;
                 }
                 dist[y] = dist[x] + 1;
+                if (dist[y] == K) {
+                    ans.add(y);
+                }
                 q.offer(y);
             }
         }
