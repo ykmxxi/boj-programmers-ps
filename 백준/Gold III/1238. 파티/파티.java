@@ -39,7 +39,7 @@ public class Main {
 
     static void dijkstra(int start) {
         for (int i = 1; i <= N; i++) {
-            dist[i] = INF;
+            dist[i] = Integer.MAX_VALUE;
         }
 
         PriorityQueue<Info> pq = new PriorityQueue<>();
