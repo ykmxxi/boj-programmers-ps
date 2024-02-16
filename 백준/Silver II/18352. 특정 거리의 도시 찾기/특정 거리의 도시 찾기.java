@@ -6,6 +6,7 @@ public class Main {
     static int N, M, X, K;
     static int[] dist;
     static List<Integer>[] adj;
+    static List<Integer> ans;
 
     static void input() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -28,6 +29,7 @@ public class Main {
 
             adj[from].add(to);
         }
+        ans = new ArrayList<>();
     }
 
     static void bfs(int start) {
@@ -37,13 +39,19 @@ public class Main {
 
         while (!q.isEmpty()) {
             int x = q.poll();
+            if (dist[x] > K) {
+                break;
+            }
+            if (dist[x] == K) {
+                ans.add(x);
+            }
 
             for (int y : adj[x]) {
                 if (dist[y] != -1) {
                     continue;
                 }
                 dist[y] = dist[x] + 1;
-                q.add(y);
+                q.offer(y);
             }
         }
     }
@@ -51,19 +59,15 @@ public class Main {
     static void pro() {
         bfs(X);
 
-        boolean exist = false;
         StringBuilder sb = new StringBuilder();
-        for (int i = 1; i <= N; i++) {
-            if (dist[i] == K) {
-                exist = true;
-                sb.append(i).append('\n');
-            }
-        }
-
-        if (exist) {
-            System.out.print(sb);
-        } else {
+        if (ans.size() == 0) {
             System.out.println(-1);
+        } else {
+            ans.sort(Comparator.comparingInt(o -> o));
+            for (int n : ans) {
+                sb.append(n).append('\n');
+            }
+            System.out.print(sb);
         }
     }
 
