@@ -68,6 +68,10 @@ public class Main {
         int ans = 0;
         for (int i = 1; i <= N; i++) {
             int sum = 0;
+            
+            if (i == X) {
+                continue;
+            }
             dijkstra(i);
             sum += dist[X];
             dijkstra(X);
