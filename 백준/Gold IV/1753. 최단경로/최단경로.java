@@ -41,7 +41,7 @@ public class Main {
             dist[i] = Integer.MAX_VALUE;
         }
 
-        PriorityQueue<Info> pq = new PriorityQueue<>((o1, o2) -> o1.dist - o2.dist);
+        PriorityQueue<Info> pq = new PriorityQueue<>();
         pq.add(new Info(K, 0));
         dist[K] = 0;
 
@@ -93,13 +93,18 @@ public class Main {
         }
     }
 
-    static class Info {
+    static class Info implements Comparable<Info> {
         int idx;
         int dist;
 
         Info(int idx, int dist) {
             this.idx = idx;
             this.dist = dist;
+        }
+        
+        @Override
+        public int compareTo(Info o) {
+            return this.dist - o.dist;
         }
     }
 }
