@@ -25,38 +25,36 @@ public class Main {
             A[i] = br.readLine();
         }
         cnt = new int[N][M];
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < M; j++) {
-                cnt[i][j] = -1;
-            }
-        }
     }
 
     static void dijkstra(int sx, int sy) {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < M; j++) {
+                cnt[i][j] = Integer.MAX_VALUE;
+            }
+        }
+
         PriorityQueue<Info> pq = new PriorityQueue<>();
         pq.add(new Info(sx, sy,  0));
         cnt[sx][sy] = 0;
 
         while (!pq.isEmpty()) {
             Info info = pq.poll();
-            if (info.x == N - 1 && info.y == M - 1) {
-                break;
-            }
 
             for (int k = 0; k < 4; k++) {
                 int nx = info.x + dir[k][0];
                 int ny = info.y + dir[k][1];
+                int nc = info.count;
 
                 if (nx < 0 || ny < 0 || nx >= N || ny >= M) {
                     continue;
                 }
-                if (cnt[nx][ny] == -1 && A[nx].charAt(ny) == '0') {
-                    cnt[nx][ny] = info.count;
-                    pq.add(new Info(nx, ny, cnt[nx][ny]));
+                if (A[nx].charAt(ny) == '1') {
+                    nc++;
                 }
-                if (cnt[nx][ny] == -1 && A[nx].charAt(ny) == '1') {
-                    cnt[nx][ny] = info.count + 1;
-                    pq.add(new Info(nx, ny, cnt[nx][ny]));
+                if (cnt[nx][ny] > nc) {
+                    cnt[nx][ny] = nc;
+                    pq.add(new Info(nx, ny, nc));
                 }
             }
         }
