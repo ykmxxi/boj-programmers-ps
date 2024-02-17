@@ -46,7 +46,7 @@ public class Main {
         for (int i = 1; i <= n; i++) {
             dist[i] = Integer.MAX_VALUE;
         }
-        
+
         PriorityQueue<Info> pq = new PriorityQueue<>();
         pq.add(new Info(start, 0));
         dist[start] = 0;
