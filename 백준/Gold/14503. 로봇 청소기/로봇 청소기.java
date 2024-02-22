@@ -11,7 +11,7 @@ import java.io.*;
 
 public class Main {
 
-    static int N, M, x, y, d, empty = 0;
+    static int N, M, r, c, d, ans;
     static int[][] A;
     static int[][] dir = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}}; // 북 동 남 서
 
@@ -22,8 +22,8 @@ public class Main {
         M = Integer.parseInt(st.nextToken());
 
         st = new StringTokenizer(br.readLine(), " ");
-        x = Integer.parseInt(st.nextToken());
-        y = Integer.parseInt(st.nextToken());
+        r = Integer.parseInt(st.nextToken());
+        c = Integer.parseInt(st.nextToken());
         d = Integer.parseInt(st.nextToken());
 
         A = new int[N][M];
@@ -31,71 +31,44 @@ public class Main {
             st = new StringTokenizer(br.readLine(), " ");
             for (int j = 0; j < M; j++) {
                 A[i][j] = Integer.parseInt(st.nextToken());
-                if (A[i][j] == 0) {
-                    empty++;
+            }
+        }
+    }
+
+    static void dfs(int x, int y, int curD) {
+        A[x][y] = 2;
+
+        for (int k = 0; k < 4; k++) {
+            curD = (curD + 3) % 4;
+
+            int nx = x + dir[curD][0];
+            int ny = y + dir[curD][1];
+
+            if (nx >= 0 && ny >= 0 && nx < N && ny < M) {
+                if (A[nx][ny] == 0) {
+                    ans++;
+                    dfs(nx, ny, curD);
+                    return;
                 }
             }
         }
-    }
 
-    static boolean stop() {
-        //  바라보는 방향의 뒤쪽 칸이 벽이면 후진
-        int nx = x + dir[(d + 2) % 4][0];
-        int ny = y + dir[(d + 2) % 4][1];
-        if (nx >= 0 && ny >= 0 && nx < N && ny < M && A[nx][ny] == 1) {
-            return true;
-        }
-        return false;
-    }
+        int back = (curD + 2) % 4;
+        int bx = x + dir[back][0];
+        int by = y + dir[back][1];
 
-    static boolean check() {
-        for (int k = 0; k < 4; k++) {
-            int nx = x + dir[k][0];
-            int ny = y + dir[k][1];
-
-            if (nx >= 0 && ny >= 0 && nx < N && ny < M && A[nx][ny] == 0) {
-                return true;
+        if (bx >= 0 && by >= 0 && bx < N && by < M) {
+            if (A[bx][by] != 1) {
+                dfs(bx, by, curD);
             }
         }
-        return false;
-    }
 
-    static void rotate() {
-        if (d == 0) {
-            d = 3;
-        } else {
-            d--;
-        }
     }
 
     static void pro() {
-        int ans = 0;
-        while (true) {
-            if (empty == 0) {
-                break;
-            }
-            if (A[x][y] == 0) { // 현재 칸이 청소되지 않은 빈칸이면 청소
-                A[x][y] = 2; // 청소된 빈 칸으로 변경
-                empty--;
-                ans++;
-            }
+        ans = 1;
 
-            if (check()) { // 주변 4칸 중 청소되지 않은 빈 칸이 있는 경우
-                // 90 회전
-                do {
-                    rotate();
-                } while (A[x + dir[d][0]][y + dir[d][1]] != 0);
-                x += dir[d][0];
-                y += dir[d][1];
-            } else { // 주변 4칸 중 청소되지 않은 빈 칸이 없는 경우
-                if (stop()) {
-                    break;
-                }
-                // 1칸 후진
-                x += dir[(d + 2) % 4][0];
-                y += dir[(d + 2) % 4][1];
-            }
-        }
+        dfs(r, c, d);
 
         System.out.println(ans);
     }
