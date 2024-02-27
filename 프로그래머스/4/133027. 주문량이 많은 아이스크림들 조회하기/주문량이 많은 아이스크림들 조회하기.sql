@@ -8,6 +8,6 @@ from FIRST_HALF as f inner join (
     select FLAVOR, sum(TOTAL_ORDER) TOTAL_ORDER
     from JULY
     group by FLAVOR) as j
-on f.FLAVOR = j.FLAVOR
+using(FLAVOR)
 order by (f.TOTAL_ORDER + j.TOTAL_ORDER) desc
 limit 3;
