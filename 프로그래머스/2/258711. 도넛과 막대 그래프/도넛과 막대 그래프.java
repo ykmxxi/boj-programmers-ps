@@ -18,14 +18,9 @@ class Solution {
     static boolean f1, f2;
     
     static void makeAdj(int[][] e) {
-        // 정점 갯수 찾기
-        for (int[] a : e) {
-            vc = Math.max(vc, Math.max(a[0], a[1]));
-        }
-        
-        adj = new ArrayList[vc + 1];
-        indeg = new int[vc + 1];
-        for (int i = 1; i <= vc; i++) {
+        adj = new ArrayList[1000001];
+        indeg = new int[1000001];
+        for (int i = 1; i <= 1000000; i++) {
             adj[i] = new ArrayList<>();
         }
         
@@ -35,6 +30,7 @@ class Solution {
             
             indeg[to]++;
             adj[from].add(to);
+            vc = Math.max(vc, Math.max(from, to));
         }
     }
     
@@ -165,9 +161,6 @@ class Solution {
         ans.add(cnt1);
         ans.add(cnt2);
         ans.add(cnt3);
-        System.out.println(idx);
-        System.out.println(cnt1);
-        System.out.println(cnt2);
         
         return ans.stream().mapToInt(i -> i).toArray();
     }
