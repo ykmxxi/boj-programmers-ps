@@ -10,46 +10,26 @@
 class Solution {
     public int solution(String s) {
         int answer = 0;
-        char[] arr = s.toCharArray();
-        boolean[] visit = new boolean[s.length()];
+        char prev = '1';
+        int same = 0;
+        int diff = 0;
         
-        for (int i = 0; i < arr.length; i++) {
-            if (visit[i]) {
-                continue;
-            }
-            
-            char x = arr[i];
-            visit[i] = true;
-            int last = 0;
-            int xCnt = 1;
-            int dCnt = 0;
-            
-            if (i == arr.length - 1) {
+        for (char ch : s.toCharArray()) {
+            if (prev == '1') {
+                prev = ch;
+                same++;
                 answer++;
+            } else if (ch == prev) {
+                same++;
+            } else {
+                diff++;
             }
             
-            for (int j = i + 1; j < arr.length; j++) {
-                visit[j] = true;
-                if (x == arr[j]) {
-                    xCnt++;
-                } else {
-                    dCnt++;
-                }
-                
-                if (j == arr.length - 1 && xCnt != dCnt) {
-                    System.out.println(arr[j]);
-                    answer++;
-                }
-                
-                if (xCnt == dCnt) {
-                    answer++;
-                    last = j;
-                    System.out.println(arr[j]);
-                    break;
-                }
+            if (same == diff) {
+                prev = '1';
+                same = 0;
+                diff = 0;
             }
-            
-            i = last;
         }
         
         return answer;
