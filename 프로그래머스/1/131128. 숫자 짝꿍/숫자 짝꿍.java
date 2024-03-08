@@ -8,8 +8,7 @@ import java.util.*;
 class Solution {
     public String solution(String X, String Y) {
         StringBuilder sb = new StringBuilder();
-        
-        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+    
         int[] vx = new int[10];
         int[] vy = new int[10];
         
@@ -20,26 +19,19 @@ class Solution {
             vy[c - '0']++;
         }
         
-        for (int i = 0; i < 10; i++) {
+        for (int i = 9; i >= 0; i--) {
             if (vx[i] > 0 && vy[i] > 0) {
                 for (int j = 0; j < Math.min(vx[i], vy[i]); j++) {
-                    pq.offer(i);
+                    sb.append(i);
                 }
             }
         }
         
-        if (pq.isEmpty()) {
+        if (sb.toString().isEmpty()) {
             return "-1";
         }
         
-        if (pq.peek() == 0) {
-            return "0";
-        }
+        return sb.toString().charAt(0) == '0' ? "0" : sb.toString();
         
-        while (!pq.isEmpty()) {
-            sb.append(pq.poll());
-        }
-        
-        return sb.toString();
     }
 }
