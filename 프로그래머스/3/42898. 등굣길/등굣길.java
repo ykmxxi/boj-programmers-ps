@@ -15,21 +15,16 @@ class Solution {
     
     static final int MOD = 1_000_000_007;
     
-    boolean check(int[][] puddles, int x, int y) {
-        for (int[] puddle : puddles) {
-            if (puddle[0] == y && puddle[1] == x) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
     public int solution(int m, int n, int[][] puddles) {
         int answer = 0;
         int[][] dy = new int[n + 1][m + 1];
         int[][] dir = {{0, -1}, {-1, 0}}; // 왼쪽, 위쪽
         
         dy[1][1] = 1;
+        
+        for (int[] puddle : puddles) {
+            dy[puddle[1]][puddle[0]] = -1;
+        }
         
         for (int i = 3; i <= m + n; i++) {
             for (int j = 1; j < i; j++) {
@@ -40,7 +35,8 @@ class Solution {
                     continue;
                 }
                 
-                if (check(puddles, x, y)) {
+                if (dy[x][y] == -1) {
+                    dy[x][y] = 0;
                     continue;
                 }
                 if (x == 1) { // 1행: 왼쪽만 체크
