@@ -19,7 +19,7 @@ class Solution {
         
         int p1 = 0;
         int p2 = 0;
-        for (int i = 0; i < A.length; i++) {
+        while (p1 < A.length && p2 < B.length) {
             if (A[p1] >= B[p2]) {
                 p2++;
             } else {
