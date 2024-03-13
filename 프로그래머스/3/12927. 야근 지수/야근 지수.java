@@ -11,7 +11,7 @@ class Solution {
     
     
     public long solution(int n, int[] works) {
-        long answer = 0;
+        long answer = 0L;
         long sum = 0L;
         
         PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
