@@ -30,7 +30,7 @@ class Solution {
     }
     
     void rec(char[] arr, String s, int depth) {
-        if (depth > arr.length) {
+        if (depth == arr.length) {
             return;
         }
         
