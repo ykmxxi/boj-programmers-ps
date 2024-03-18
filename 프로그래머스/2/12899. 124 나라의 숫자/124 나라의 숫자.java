@@ -1,7 +1,7 @@
 class Solution {
     
     public String solution(int n) {
-        String answer = "";
+        StringBuilder sb = new StringBuilder();
         String[] arr = {"4", "1", "2"};
         
         while(n > 0) {
@@ -12,10 +12,10 @@ class Solution {
                 n--;
             }
             
-            answer = arr[tmp] + answer;
+            sb.append(arr[tmp]);
         }
 
-        return answer;
+        return sb.reverse().toString();
     }
     
 }
