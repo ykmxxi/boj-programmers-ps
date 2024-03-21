@@ -9,54 +9,34 @@ import java.util.*;
 
 class Solution {
     
-    long comb(long a, long b) {
-        if (a == b || b == 0) {
-            return 1;
-        }
-        return comb(a - 1, b - 1) + comb(a - 1, b);
-    }
-    
-    long calc(Map<Integer, Integer> map, int curCnt, List<Integer> target) {
-        long val = 0L;
-        
-        for (int t : target) {
-            if (map.containsKey(t)) {
-                val += map.get(t) * curCnt;
-            }
-        }
-        
-        // 자기 자신 curCnt 중 2개를 뽑기
-        if (curCnt > 1) {
-            val += comb(curCnt, 2);
-        }
-        return val;
-    }
-    
     public long solution(int[] weights) {
         long answer = 0L;
         
         Arrays.sort(weights);
         
-        Map<Integer, Integer> map = new HashMap<>(); // key:몸무게, value:사람수
+        Map<Integer, Long> map = new HashMap<>(); // key:몸무게, value:사람수
         
         for (int w : weights) {
-            if (map.containsKey(w)) {
-                answer += map.get(w);
-            }
-            if (w % 3 == 0 && map.containsKey(w * 2 / 3)) {
-                answer += map.get(w * 2 / 3);
-            }
-            if (w % 2 == 0 && map.containsKey(w / 2)) {
-                answer += map.get(w / 2);
-            }
-            if (w % 4 == 0 && map.containsKey(w * 3 / 4)) {
-                answer += map.get(w * 3 / 4);
-            }
+            map.put(w, map.getOrDefault(w, 0L) + 1L);
+        }
+        
+        for (int k : map.keySet()) {
+            long cnt = map.get(k);
+            answer += cnt * (cnt - 1) / 2;
             
-            map.put(w, map.getOrDefault(w, 0) + 1);
+            if (k % 2 == 0 && map.containsKey(k * 3 / 2)) {
+                answer += cnt * map.get(k * 3 / 2);
+            }
+            if (map.containsKey(2 * k)) {
+                answer += cnt * map.get(2 * k);
+            }
+            if (k % 3 == 0 && map.containsKey(k * 4 / 3)) {
+                answer += cnt * map.get(k * 4 / 3);
+            }
         }
         
         return answer;
+        
     }
     
 }
