@@ -1,10 +1,7 @@
--- 코드를 입력하세요
--- PRODUCT 테이블과 OFFLINE_SALE 테이블에서 상품코드 별 매출액(판매가 * 판매량) 합계를 출력하는 문제
--- 결과는 매출액을 기준으로 내림차순, 상품코드 기준으로 오름차순
+-- 상품코드 별(group by PRODUCT_CODE) 매출액 합계 출력
+-- 매축액 합계 기준 내림차순, 상품코드 기준 오름차순
 
-SELECT P.PRODUCT_CODE, SUM(P.PRICE * O.SALES_AMOUNT) AS SALES
-FROM PRODUCT AS P
-JOIN OFFLINE_SALE AS O
-ON P.PRODUCT_ID = O.PRODUCT_ID
-GROUP BY P.PRODUCT_CODE
-ORDER BY SALES DESC, PRODUCT_CODE ASC
+select p.PRODUCT_CODE, sum(p.PRICE * o.SALES_AMOUNT) as SALES
+from PRODUCT as p inner join OFFLINE_SALE as o on p.PRODUCT_ID = o.PRODUCT_ID
+group by p.PRODUCT_CODE
+order by SALES desc, p.PRODUCT_CODE;
