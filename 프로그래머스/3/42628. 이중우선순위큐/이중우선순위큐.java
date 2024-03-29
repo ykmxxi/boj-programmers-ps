@@ -35,13 +35,9 @@ class Solution {
         }
         
         int[] ans = new int[2];
-        if (pq.size() >= 2) {
+        if (pq.size() >= 1) {
             ans[0] = maxPq.poll();
             ans[1] = pq.poll();
-        } else if (pq.size() == 1) {
-            int n = pq.poll();
-            ans[0] = n;
-            ans[1] = n;
         } else {
             ans[0] = 0;
             ans[1] = 0;
