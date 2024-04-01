@@ -1,6 +1,4 @@
-/*
-    https://school.programmers.co.kr/learn/courses/30/lessons/87390
-    
+/*  
     - n: 행과 열의 크기
     - left:
     - right:
