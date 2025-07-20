@@ -1,46 +1,52 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+// https://www.acmicpc.net/problem/15650
+// 조합
+// 시간 복잡도: O(N! / M!(N - M)!)
+
+import java.util.*;
+import java.io.*;
 
 public class Main {
 
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static StringBuilder sb = new StringBuilder();
     static StringTokenizer st;
+    static StringBuilder sb = new StringBuilder();
     static int N, M;
-    static int[] arr;
+    static int[] sel;
+
+    public static void main(String[] args) throws IOException {
+        input();
+        pro();
+        System.out.print(sb);
+    }
 
     static void input() throws IOException {
         st = new StringTokenizer(br.readLine(), " ");
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
-        arr = new int[M];
+
+        sel = new int[M];
+    }
+
+    static void pro() {
+        rec(0);
     }
 
     static void rec(int depth) {
         if (depth == M) {
-            for (int a : arr) {
-                sb.append(a).append(' ');
+            for(int i=0; i <M; i++) {
+                sb.append(sel[i]).append(' ');
             }
             sb.append('\n');
-            return;
-        }
-        int start = 0;
-        if (depth != 0) {
-            start = arr[depth - 1];
-        }
-        for (int cand = start + 1; cand <= N; cand++) {
-            arr[depth] = cand;
-            rec(depth + 1);
-            arr[depth] = 0;
+        } else {
+            int start = 1;
+            if (depth != 0) {
+                start = sel[depth - 1] + 1; // 이전 선택한 수보다 +1 -> 중복 X
+            }
+            for (int cand = start; cand <= N; cand++) {
+                sel[depth] = cand;
+                rec(depth + 1);
+                sel[depth] = 0;
+            }
         }
     }
-
-    public static void main(String[] args) throws IOException {
-        input();
-        rec(0);
-        System.out.print(sb.toString());
-    }
-
 }
