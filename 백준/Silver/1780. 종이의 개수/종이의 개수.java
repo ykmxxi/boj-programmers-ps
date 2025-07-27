@@ -51,15 +51,11 @@ public class Main {
         } else {
             // 9개로 쪼개야 함
             int nl = len / 3;
-            rec(nl, x, y);
-            rec(nl, x, y + nl);
-            rec(nl, x, y + (2*nl));
-            rec(nl, x+nl, y);
-            rec(nl, x+nl, y+nl);
-            rec(nl, x+nl, y+(2*nl));
-            rec(nl, x+(2*nl), y);
-            rec(nl, x+(2*nl), y+nl);
-            rec(nl, x+(2*nl), y+(2*nl));
+            for (int i = 0; i<3; i++) {
+                for (int j=0; j<3; j++) {
+                    rec(nl, x+(nl*i), y+(nl*j));
+                }
+            }
         }
     }
 
