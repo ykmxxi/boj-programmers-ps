@@ -1,55 +1,61 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+// 랜선 자르기: https://www.acmicpc.net/problem/1654
+// 시간 복잡도: O(N logN) + O(logN) -> O((N+1) logN)
+
+import java.util.*;
+import java.io.*;
 
 public class Main {
-	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	static StringBuilder sb = new StringBuilder();
-	static StringTokenizer st;
 
-	static int K, N;
-	static int[] A;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static StringTokenizer st;
+    static int K, N;
+    static int[] arr;
 
-	static void input() throws IOException {
-		st = new StringTokenizer(br.readLine(), " ");
-		K = Integer.parseInt(st.nextToken());
-		N = Integer.parseInt(st.nextToken());
-		A = new int[K + 1];
+    public static void main(String[] args) throws IOException {
+        input();
+        pro();
+    }
 
-		for (int i = 1; i <= K; i++) {
-			A[i] = Integer.parseInt(br.readLine());
-		}
-	}
+    static void input() throws IOException {
+        st = new StringTokenizer(br.readLine(), " ");
+        K = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
+        arr = new int[K];
 
-	static boolean determination(long length) {
-		int count = 0;
-		for (int i = 1; i <= K; i++) {
-			count += A[i] / length;
-		}
-		return count >= N;
-	}
+        for (int i=0; i < K; i++) {
+            arr[i] = Integer.parseInt(br.readLine());
+        }
+    }
 
-	static void pro() {
-		long L = 1;
-		long R = Integer.MAX_VALUE;
-		long answer = 0;
+    static void pro() {
+        // N개의 랜선 필요, K개의 랜선 길이가 제각각 -> N개의 같은 길이의 랜선
+        // 만들 수 있는 최대 랜선의 길이
+        Arrays.sort(arr);
 
-		while (L <= R) {
-			long mid = (L + R) / 2;
-			if (determination(mid)) {
-				answer = mid;
-				L = mid + 1;
-			} else {
-				R = mid - 1;
-			}
-		}
+        long L = 1L;
+        long R = Integer.MAX_VALUE;
+        long ans = 0L;
 
-		System.out.println(answer);
-	}
+        while (L <= R) {
+            long mid = (L + R) / 2; // int -> overflow -> 3*Integer.MAX / 2
 
-	public static void main(String[] args) throws IOException {
-		input();
-		pro();
-	}
+            if (check(mid)) { // N개를 만들 수 있다 -> 길이를 늘리자
+                ans = mid;
+                L = mid + 1;
+            } else {
+                R = mid - 1;
+            }
+        }
+
+        System.out.println(ans);
+    }
+
+    static boolean check(long len) {
+        long cnt = 0L;
+        for (int num : arr) {
+            cnt += num / len;
+        }
+        return cnt >= N;
+    }
+
 }
