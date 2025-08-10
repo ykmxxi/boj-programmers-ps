@@ -52,7 +52,8 @@ public class Main {
                     continue;
                 }
                 size = 0;
-                dfs(i, j);
+                // dfs(i, j);
+                bfs(i, j);
                 ans.add(size);
             }
         }
@@ -64,20 +65,47 @@ public class Main {
         System.out.print(sb);
     }
 
-    static void dfs(int x, int y) {
-        visit[x][y] = true;
-        size++;
+    static void bfs(int sx, int sy) {
+        visit[sx][sy] = true;
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(sx);
+        q.offer(sy);
 
-        for (int k = 0; k < 4; k++) {
-            int nx = x + dir[k][0];
-            int ny = y + dir[k][1];
-            if (nx < 0 || ny < 0 || nx >= N || ny >= M) {
-                continue;
+        while (!q.isEmpty()) {
+            int x = q.poll();
+            int y = q.poll();
+            size++;
+
+            for (int k = 0; k < 4; k++) {
+                int nx = x + dir[k][0];
+                int ny = y + dir[k][1];
+                if (nx < 0 || ny < 0 || nx >= N || ny >= M) {
+                    continue;
+                }
+                if (visit[nx][ny] || A[nx][ny] == 1) {
+                    continue;
+                }
+                q.offer(nx);
+                q.offer(ny);
+                visit[nx][ny] = true;
             }
-            if (visit[nx][ny] || A[nx][ny] == 1) {
-                continue;
-            }
-            dfs(nx, ny);
         }
     }
+
+    // static void dfs(int x, int y) {
+    //     visit[x][y] = true;
+    //     size++;
+    //
+    //     for (int k = 0; k < 4; k++) {
+    //         int nx = x + dir[k][0];
+    //         int ny = y + dir[k][1];
+    //         if (nx < 0 || ny < 0 || nx >= N || ny >= M) {
+    //             continue;
+    //         }
+    //         if (visit[nx][ny] || A[nx][ny] == 1) {
+    //             continue;
+    //         }
+    //         dfs(nx, ny);
+    //     }
+    // }
 }
