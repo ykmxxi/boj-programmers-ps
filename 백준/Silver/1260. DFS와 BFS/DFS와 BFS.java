@@ -1,92 +1,85 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+// DFS와 BFS: https://www.acmicpc.net/problem/1260
+// 시간 복잡도: 정렬 -> O(M logN), dfs -> O(N + M) , bfs -> O(N + M)
 
-class Main {
-	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	static StringBuilder sb = new StringBuilder();
-	static StringTokenizer st;
+import java.util.*;
+import java.io.*;
 
-	static int N, M, V;
-	static ArrayList<Integer>[] adj;
-	static boolean[] visit;
+public class Main {
 
-	static void input() throws IOException {
-		st = new StringTokenizer(br.readLine(), " ");
-		N = Integer.parseInt(st.nextToken());
-		M = Integer.parseInt(st.nextToken());
-		V = Integer.parseInt(st.nextToken());
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static StringBuilder sb = new StringBuilder();
+    static StringTokenizer st;
+    static int N, M, V;
+    static boolean[] visit;
+    static List<Integer>[] adj;
 
-		adj = new ArrayList[N + 1];
-		for (int i = 1; i <= N; i++) {
-			adj[i] = new ArrayList<>();
-		}
+    public static void main(String[] args) throws IOException {
+        input();
 
-		for (int i = 1; i <= M; i++) {
-			st = new StringTokenizer(br.readLine(), " ");
-			int x = Integer.parseInt(st.nextToken());
-			int y = Integer.parseInt(st.nextToken());
-			adj[x].add(y);
-			adj[y].add(x);
-		}
+        pro();
+    }
 
-		for (int i = 1; i <= N; i++) {
-			Collections.sort(adj[i]);
-		}
-	}
+    static void input() throws IOException {
+        st = new StringTokenizer(br.readLine(), " ");
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        V = Integer.parseInt(st.nextToken());
 
-	static void dfs(int start) {
-		visit[start] = true;
-		sb.append(start).append(' ');
+        adj = new ArrayList[N + 1]; // 1 ~ N 정점
+        for (int i = 0; i <= N; i++) {
+            adj[i] = new ArrayList<>();
+        }
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            int u = Integer.parseInt(st.nextToken());
+            int v = Integer.parseInt(st.nextToken());
+            adj[u].add(v);
+            adj[v].add(u);
+        }
+    }
 
-		for (int y : adj[start]) {
-			if (visit[y]) {
-				continue;
-			}
-			dfs(y);
-		}
-	}
+    static void pro() {
+        // 작은 점부터 방문
+        for (int i = 1; i <= N; i++) {
+            Collections.sort(adj[i]);
+        }
+        visit = new boolean[N + 1];
+        dfs(V);
 
-	static void bfs(int start) {
-		Queue<Integer> q = new LinkedList<>();
-		visit[start] = true;
-		q.add(start);
+        sb.append("\n");
+        visit = new boolean[N + 1];
+        bfs(V);
 
-		while (!q.isEmpty()) {
-			int x = q.poll();
-			sb.append(x).append(' ');
+        System.out.println(sb);
+    }
 
-			for (int y : adj[x]) {
-				if (visit[y]) {
-					continue;
-				}
-				q.add(y);
-				visit[y] = true;
-			}
-		}
-	}
+    static void dfs(int x) {
+        visit[x] = true;
+        sb.append(x).append(' ');
 
-	static void pro() {
-		// 초기화
-		visit = new boolean[N + 1];
-		dfs(V);
-		sb.append('\n');
+        for (int y : adj[x]) {
+            if (visit[y]) {
+                continue;
+            }
+            dfs(y);
+        }
+    }
 
-		// 초기화
-		visit = new boolean[N + 1];
-		bfs(V);
+    static void bfs(int start) {
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(start);
+        visit[start] = true;
 
-		System.out.println(sb);
-	}
-
-	public static void main(String[] args) throws IOException {
-		input();
-		pro();
-	}
-
+        while (!q.isEmpty()) {
+            int cur = q.poll();
+            sb.append(cur).append(' ');
+            for (int next : adj[cur]) {
+                if (visit[next]) {
+                    continue;
+                }
+                q.offer(next);
+                visit[next] = true;
+            }
+        }
+    }
 }
