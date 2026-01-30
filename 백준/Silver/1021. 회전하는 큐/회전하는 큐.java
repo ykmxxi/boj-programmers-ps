@@ -9,7 +9,7 @@ public class Main {
     static StringBuilder sb = new StringBuilder();
     static int N, M;
     static int[] A;
-    static LinkedList<Integer> dq = new LinkedList<>();
+    static Deque<Integer> dq = new ArrayDeque<>();
 
     public static void main(String[] args) throws IOException {
         input();
