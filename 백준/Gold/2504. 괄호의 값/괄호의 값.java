@@ -1,45 +1,53 @@
-/*
-
- */
-
 import java.util.*;
 import java.io.*;
 
+// 시간 복잡도: O(N)
+// 공간 복잡도: O(N)
 public class Main {
 
-    static String s;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static StringBuilder sb = new StringBuilder();
+    static String str;
+
+    public static void main(String[] args) throws IOException {
+        input();
+        pro();
+    }
 
     static void input() throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        s = br.readLine();
+        str = br.readLine();
     }
 
     static void pro() {
+        // (), [] 같이 한 쌍의 괄호로만 이루어지면 올바름
+        // (X), [X] 도 올바른 괄호열, XY도 올바른 괄호열
         Deque<Character> dq = new ArrayDeque<>();
         int ans = 0;
         int val = 1;
-
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '(') {
-                dq.push(s.charAt(i));
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            if (ch == '(') {
                 val *= 2;
-            } else if (s.charAt(i) == '[') {
-                dq.push(s.charAt(i));
+                dq.push(ch);
+            } else if (ch == '[') {
                 val *= 3;
-            } else if (s.charAt(i) == ')') {
+                dq.push(ch);
+            } else if (ch == ')') {
                 if (dq.isEmpty() || dq.peek() != '(') {
                     ans = 0;
                     break;
-                } else if (s.charAt(i - 1) == '(') {
+                }
+                if (str.charAt(i - 1) == '(') {
                     ans += val;
                 }
                 dq.pop();
                 val /= 2;
-            } else if (s.charAt(i) == ']') {
+            } else {
                 if (dq.isEmpty() || dq.peek() != '[') {
                     ans = 0;
                     break;
-                } else if (s.charAt(i - 1) == '[') {
+                }
+                if (str.charAt(i - 1) == '[') {
                     ans += val;
                 }
                 dq.pop();
@@ -47,19 +55,10 @@ public class Main {
             }
         }
 
-        StringBuilder sb = new StringBuilder();
         if (!dq.isEmpty()) {
-            sb.append(0);
+            System.out.print(0);
         } else {
-            sb.append(ans);
+            System.out.print(ans);
         }
-
-        System.out.println(sb);
     }
-
-    public static void main(String[] args) throws IOException {
-        input();
-        pro();
-    }
-
 }
