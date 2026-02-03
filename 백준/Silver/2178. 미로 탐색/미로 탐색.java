@@ -1,37 +1,46 @@
-/*
-    - N x M 배열의 미로에서 1은 이동 가능, 0은 이동 불가능
-    - (1, 1) 출발해 (N, M) 위치로 이동할 때 지나야 하는 최소의 칸 수
-    - 인접(상하좌우)한 칸으로만 이동 가능
- */
-
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
+// 시간 복잡도: O(N * M)
+// 공간 복잡도: O(N * M)
 public class Main {
 
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static StringBuilder sb = new StringBuilder();
+    static StringTokenizer st;
     static int N, M;
-    static String[] A;
-    static int[][] dist, dir = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    static int[][] adj, dist, dir = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+    public static void main(String[] args) throws IOException {
+        input();
+        pro();
+    }
 
     static void input() throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        st = new StringTokenizer(br.readLine(), " ");
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
 
-        A = new String[N];
-        for (int i = 0; i < N; i++) {
-            A[i] = br.readLine();
-        }
-
+        adj = new int[N][M];
         dist = new int[N][M];
+        for (int i = 0; i < N; i++) {
+            String line = br.readLine();
+            for (int j = 0; j < M; j++) {
+                adj[i][j] = line.charAt(j) - '0';
+            }
+        }
     }
 
-    static void bfs() {
+    static void pro() {
+        bfs(0, 0);
+        System.out.print(dist[N - 1][M - 1]);
+    }
+
+    static void bfs(int sx, int sy) {
         Queue<Integer> q = new LinkedList<>();
-        q.add(0);
-        q.add(0);
-        dist[0][0] = 1;
+        q.offer(sx);
+        q.offer(sy);
+        dist[sx][sy] = 1;
 
         while (!q.isEmpty()) {
             int x = q.poll();
@@ -44,25 +53,13 @@ public class Main {
                 if (nx < 0 || ny < 0 || nx >= N || ny >= M) {
                     continue;
                 }
-                if (A[nx].charAt(ny) == '0' || dist[nx][ny] != 0) {
+                if (dist[nx][ny] != 0 || adj[nx][ny] == 0) { // 이미 방문했거나, 벽이면 넘어가
                     continue;
                 }
-
+                q.offer(nx);
+                q.offer(ny);
                 dist[nx][ny] = dist[x][y] + 1;
-                q.add(nx);
-                q.add(ny);
             }
         }
-    }
-
-    static void pro() {
-        bfs();
-
-        System.out.println(dist[N - 1][M - 1]);
-    }
-
-    public static void main(String[] args) throws IOException {
-        input();
-        pro();
     }
 }
