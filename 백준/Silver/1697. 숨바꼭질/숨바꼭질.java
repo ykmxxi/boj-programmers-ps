@@ -1,60 +1,64 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
+// 시간 복잡도: O(V + E) 이내
+// 공간 복잡도: O(V) (V는 정점의 개수, 100,000)
 public class Main {
-	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	static StringTokenizer st;
 
-	static int N, K;
-	static int[] dist;
-	static boolean[] visit;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static StringBuilder sb = new StringBuilder();
+    static StringTokenizer st;
+    static int N, K;
+    static int[] dist = new int[100005];
 
-	static void input() throws IOException {
-		st = new StringTokenizer(br.readLine(), " ");
-		N = Integer.parseInt(st.nextToken());
-		K = Integer.parseInt(st.nextToken());
-		dist = new int[100001];
-		visit = new boolean[100001];
-	}
+    public static void main(String[] args) throws IOException {
+        input();
+        pro();
+    }
 
-	static void bfs() {
-		Queue<Integer> que = new LinkedList<>();
-		que.add(N);
-		visit[N] = true;
-		dist[N] = 0;
+    static void input() throws IOException {
+        st = new StringTokenizer(br.readLine(), " ");
+        N = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(st.nextToken());
 
-		while (!que.isEmpty()) {
-			int x = que.poll();
+        Arrays.fill(dist, -1);
+    }
 
-			if (x - 1 >= 0 && !visit[x - 1]) {
-				visit[x - 1] = true;
-				dist[x - 1] = dist[x] + 1;
-				que.add(x - 1);
-			}
-			if (x + 1 <= 100000 && !visit[x + 1]) {
-				visit[x + 1] = true;
-				dist[x + 1] = dist[x] + 1;
-				que.add(x + 1);
-			}
-			if (x * 2 <= 100000 && !visit[x * 2]) {
-				visit[x * 2] = true;
-				dist[x * 2] = dist[x] + 1;
-				que.add(x * 2);
-			}
-		}
-	}
+    static void pro() {
+        // N -> N+1, N-1, 2*N
+        bfs();
 
-	static void pro() {
-		bfs();
-		System.out.println(dist[K]);
-	}
+        System.out.print(dist[K]);
+    }
 
-	public static void main(String[] args) throws IOException {
-		input();
-		pro();
-	}
+    static void bfs() {
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(N);
+        dist[N] = 0;
+
+        while (!q.isEmpty()) {
+            int cur = q.poll();
+            if (cur == K) {
+                break;
+            }
+
+            int[] arr = new int[] {cur + 1, cur - 1, cur * 2};
+            for (int num : arr) {
+                if (check(num)) {
+                    q.offer(num);
+                    dist[num] = dist[cur] + 1;
+                }
+            }
+        }
+    }
+
+    static boolean check(int x) {
+        if (x < 0 || x > 100000) {
+            return false;
+        }
+        if (dist[x] > -1) {
+            return false;
+        }
+        return true;
+    }
 }
