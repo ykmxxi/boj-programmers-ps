@@ -1,43 +1,45 @@
-// 시간 복잡도: O(n)
-// 한 번에 한 개의 원판만 이동 -> 원판은 항상 위의 것이 아래의 것보다 작아야 한다
-// 이동 횟수는 최소
-
 import java.io.*;
+import java.util.*;
 
+// 시간 복잡도:
+// 공간 복잡도:
 public class Main {
 
-    static int N, cnt;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static StringBuilder sb = new StringBuilder();
+    static StringTokenizer st;
+    static int K, N;
 
     public static void main(String[] args) throws IOException {
         input();
-
         pro();
     }
 
     static void input() throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
     }
 
     static void pro() {
-        move(N, 1, 3); // N 개의 원판을 1 -> 3 이동
+        // n-1개의 원판을 1 -> 2번 기둥으로 옮긴다
+        // n번 원판을 1 -> 3번 기둥으로 옮긴다
+        rec(1, 3, N);
 
-        System.out.print(cnt + "\n" + sb);
+        System.out.println(K);
+        System.out.print(sb);
     }
 
-    static void move(int m, int from, int to) {
-        if (m > 1) { // 옮겨야할 원판이 남아있다면
-            // 먼저 시작 지점에서 가장 아래 원판을 제외하고, 시작과 목표를 제외한 나머지 기둥으로 옮긴다
-            move(m - 1, from, 6 - from - to);
+    // 원판 n개를 start -> end 기둥으로
+    static void rec(int start, int end, int n) {
+        if (n == 1) {
+            K++;
+            sb.append(start).append(' ').append(end).append('\n');
+            return;
         }
-
-        cnt++;
-        sb.append(from).append(' ').append(to).append('\n');
-
-        if (m > 1) {
-            // 나머지 기둥에 존재하는 그룹을 to(목적지)로 옮긴다
-            move(m - 1, 6 - from - to, to);
-        }
+        // n번 원판을 start -> end 로 옮기려면 n-1개를 6 - end - start로 옮겨야 한다.
+        rec(start, 6 - start - end, n - 1);
+        sb.append(start).append(' ').append(end).append('\n');
+        K++;
+        // 다시 n-1개의 원판을 6-start-end 에서 end로
+        rec(6-start-end, end, n-1);
     }
 }
