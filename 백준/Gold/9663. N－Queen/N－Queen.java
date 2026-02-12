@@ -1,59 +1,54 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
+// 시간 복잡도: O(N!)
+// 공간 복잡도: O(N)
 public class Main {
 
-    static int[] pos;
-    static int ans, N;
-
-    static void input() throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        N = Integer.parseInt(br.readLine());
-
-        pos = new int[N + 1];
-        ans = 0;
-    }
-
-    static void rec(int row) {
-        if (row == N + 1) {
-            ans++;
-        } else {
-            for (int col = 1; col <= N; col++) {
-                boolean flag = true;
-
-                for (int i = 1; i <= row - 1; i++) {
-                    if (canAttack(row, col, i, pos[i])) {
-                        flag = false;
-                        break;
-                    }
-                }
-
-                if (flag) {
-                    pos[row] = col;
-                    rec(row + 1);
-                    pos[row] = 0;
-                }
-            }
-        }
-    }
-
-    static boolean canAttack(int row1, int col1, int row2, int col2) {
-        if (col1 == col2) {
-            return true;
-        }
-        if (row1 - col1 == row2 - col2) {
-            return true;
-        }
-        if (row1 + col1 == row2 + col2) {
-            return true;
-        }
-        return false;
-    }
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static StringBuilder sb = new StringBuilder();
+    static StringTokenizer st;
+    static int N, cnt = 0;
+    static boolean[] check1; // 열(col) 확인
+    static boolean[] check2; // 좌하/우상 대각선 체크
+    static boolean[] check3; // 좌상/우하 대각선 체크
 
     public static void main(String[] args) throws IOException {
         input();
-        rec(1);
-        System.out.println(ans);
+        pro();
     }
 
+    static void input() throws IOException {
+        N = Integer.parseInt(br.readLine());
+        check1 = new boolean[N];
+        check2 = new boolean[2*N];
+        check3 = new boolean[2*N];
+    }
+
+    static void pro() {
+        rec(0);
+
+        System.out.print(cnt);
+    }
+
+    static void rec(int row) {
+        if (row == N) {
+            cnt++;
+            return;
+        }
+        for (int col = 0; col < N; col++) {
+            if (check1[col] || check2[row + col] || check3[row - col + N - 1]) {
+                continue;
+            }
+            check1[col] = true;
+            check2[row + col] = true;
+            check3[row - col + N - 1] = true;
+
+            rec(row + 1);
+
+            check1[col] = false;
+            check2[row + col] = false;
+            check3[row - col + N - 1] = false;
+        }
+    }
 }
