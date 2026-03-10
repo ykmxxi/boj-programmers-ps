@@ -1,40 +1,43 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.*;
 
+// 시간 복잡도: O(1)
+// 공간 복잡도: O(1)
 public class Main {
-	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	static StringBuilder sb = new StringBuilder();
 
-	static int n;
-	static int[] Dy;
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static StringBuilder sb = new StringBuilder();
+    static StringTokenizer st;
+    static int N;
+    static int[] dy;
 
-	static void preprocess() {
-		Dy = new int[12];
+    public static void main(String[] args) throws IOException {
+        int T = Integer.parseInt(br.readLine());
+        pre();
+        while (T-- > 0) {
+            input();
+            pro();
+        }
+        System.out.print(sb);
+    }
 
-		Dy[1] = 1;
-		Dy[2] = 2;
-		Dy[3] = 4;
+    static void input() throws IOException {
+        N = Integer.parseInt(br.readLine());
+    }
 
-		for (int i = 4; i <= 11; i++) {
-			Dy[i] = Dy[i - 1] + Dy[i - 2] + Dy[i - 3];
-		}
-	}
+    static void pro() {
+        sb.append(dy[N]).append('\n');
+    }
 
-	static void pro() throws IOException {
-		int T = Integer.parseInt(br.readLine());
+    static void pre() {
+        // N을 1, 2, 3의 합으로 나타내기
+        dy = new int[11];
+        dy[0] = 1;
+        dy[1] = 1;
+        dy[2] = 2;
 
-		while (T > 0) {
-			T--;
-			n = Integer.parseInt(br.readLine());
-			sb.append(Dy[n]).append('\n');
-		}
-
-		System.out.println(sb);
-	}
-
-	public static void main(String[] args) throws IOException {
-		preprocess();
-		pro();
-	}
+        for (int i = 3; i <= 10; i++) {
+            dy[i] = dy[i - 1] + dy[i - 2] + dy[i - 3];
+        }
+    }
 }
