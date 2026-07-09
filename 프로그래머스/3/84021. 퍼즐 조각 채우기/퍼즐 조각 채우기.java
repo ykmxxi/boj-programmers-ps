@@ -8,6 +8,9 @@
     - 새로 채워 넣은 퍼즐 조각과 인접한 칸이 비어있으면 안 된다. (상하좌우를 모두 빈 칸이 아니어야 함)
     	빈 칸에 퍼즐을 놓는 순간 인접한 칸이 비어있으면 안됨
     규칙에 맞게 최대한 많은 퍼즐 조각을 채워 넣을 경우, 총 몇칸을 채울 수 있는지 return
+    
+- 시간 복잡도: O(M^2 log M)
+- 공간 복잡도: O(M)
 */
 
 import java.util.*;
@@ -16,7 +19,7 @@ class Solution {
 	static int[][] dir = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 	static int len;
 	static int[][] visit;
-	static ArrayList<ArrayList<Info>> blank, puzzle;
+	static List<List<Info>> blank, puzzle;
 
 	static void bfs(int x, int y, int[][] arr, int type) {
 		Queue<Info> q = new LinkedList<>();
@@ -52,7 +55,7 @@ class Solution {
 		}
 	}
 
-	static boolean check(ArrayList<Info> empty, ArrayList<Info> puzzle) {
+	static boolean check(List<Info> empty, List<Info> puzzle) {
 		// 90도씩 회전 시키기
 		for (int i = 0; i < 4; i++) {
 			int sx = puzzle.get(0).x;
@@ -127,12 +130,12 @@ class Solution {
 		// 저장한 보드의 빈 공간 정보와 퍼즐 모양 정보를 순회하면서 빈 공간에 퍼즐을 채워나감
 		int[] filled = new int[blank.size()]; // 공간의 상태: 퍼즐 조각이 맞아 채워지면 1
 
-		for (ArrayList<Info> piece : puzzle) {
+		for (List<Info> piece : puzzle) {
 			for (int j = 0; j < blank.size(); j++) {
 				if (filled[j] == 1) { // 이미 채워진 공간이면 넘어가기
 					continue;
 				}
-				ArrayList<Info> space = blank.get(j);
+				List<Info> space = blank.get(j);
 
 				if (space.size() == piece.size()) { // 해당 공간과 퍼즐 조각의 크기가 같으면
 					if (check(space, piece)) { // 해당 공간에 퍼즐 조각이 들어가는지 확인
